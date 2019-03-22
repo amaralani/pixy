@@ -13,9 +13,9 @@ public interface SessionService {
     /**
      * This method processes streams and persists the result.
      * Server and client streams are processed separately and joined together as a {@link ir.maralani.pixy.entity.Session}
-     * @param clientStream contains client stream instruction. Should not be null.
-     * @param serverStream contains server stream instruction. Should not be null.
-     * @throws StreamProcessingException when processing fails due to malformed streams.
+     * @param clientStream contains client stream instructions. Should not be null.
+     * @param serverStream contains server stream instructions. Should not be null.
+     * @throws StreamProcessingException when processing fails due to malformed instructions.
      */
     void processStreams(String clientStream, String serverStream) throws StreamProcessingException;
 }

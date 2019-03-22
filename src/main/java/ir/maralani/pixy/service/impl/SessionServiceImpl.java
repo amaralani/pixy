@@ -46,6 +46,11 @@ public class SessionServiceImpl implements SessionService {
         sessionRepository.save(session);
     }
 
+    /**
+     * Break each stream into instructions, then for each instruction find the OPCODE and update the counter.
+     * @param stream is a stream of instructions.
+     * @return a map which each key is OPCODE and value is the related count.
+     */
     private Map<String, Integer> getInstructionCounterMapFromStream(String stream) {
         Map<String, Integer> instructionCount = new HashMap<>();
         String[] streamInstructionSets = stream.split(";");
