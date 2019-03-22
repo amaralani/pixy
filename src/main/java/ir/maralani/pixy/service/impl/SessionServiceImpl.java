@@ -8,23 +8,31 @@ import ir.maralani.pixy.service.SessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author amir
- *
+ * <p>
  * Implementation of Session Services.
  */
 @Slf4j
 @Service
 public class SessionServiceImpl implements SessionService {
 
-    @Autowired
-    SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
 
     private Gson gson = new Gson();
+
+    @Autowired
+    public SessionServiceImpl(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
+    }
 
     @Override
     public void processStreams(String clientStream, String serverStream) throws StreamProcessingException {
@@ -46,8 +54,20 @@ public class SessionServiceImpl implements SessionService {
         sessionRepository.save(session);
     }
 
+    @Override
+    public List<String> getAllSessionIds() {
+        return sessionRepository.findAll().stream().map(Session::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Session> getSessionById(String sessionId) {
+        if (StringUtils.isEmpty(sessionId)) return Optional.empty();
+        return sessionRepository.findById(sessionId);
+    }
+
     /**
      * Break each stream into instructions, then for each instruction find the OPCODE and update the counter.
+     *
      * @param stream is a stream of instructions.
      * @return a map which each key is OPCODE and value is the related count.
      */

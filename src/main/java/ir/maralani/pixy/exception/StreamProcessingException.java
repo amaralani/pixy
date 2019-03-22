@@ -6,8 +6,6 @@ package ir.maralani.pixy.exception;
  * Semi-general exception to wrap processing exceptions.
  */
 public class StreamProcessingException extends Exception {
-    public StreamProcessingException() {
-    }
 
     public StreamProcessingException(String message) {
         super(message);

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -68,6 +69,42 @@ public class SessionServiceTest extends AbstractTest {
             List<Session> newSessions = sessionRepository.findAll();
             assertEquals("Session size after processing invalid server stream does not match", sessions.size(), newSessions.size());
         }
+    }
+
+    @Test
+    public void testGetAllSessionIds() {
+        Session session = Session.builder().clientContent("testClientContent").serverContent("testServerContent").build();
+        session = sessionRepository.save(session);
+        sessionsToRemove.add(session.getId());
+        List<Session> sessionsOfRepository = sessionRepository.findAll();
+        List<String> sessionIds = sessionService.getAllSessionIds();
+        for (Session sessionItem : sessionsOfRepository) {
+            assertTrue("Item does not exist in list!", sessionIds.contains(sessionItem.getId()));
+        }
+        assertTrue("newly added session is not present", sessionIds.contains(session.getId()));
+    }
+
+    @Test
+    public void getSessionByIdTest() {
+        // Null session id
+        Optional<Session> session = sessionService.getSessionById(null);
+        Assert.assertFalse("null session id, optional should not be present", session.isPresent());
+        // Blank session id
+        session = sessionService.getSessionById("");
+        Assert.assertFalse("blank session id, optional should not be present", session.isPresent());
+        // Empty Session Id
+        session = sessionService.getSessionById(" ");
+        Assert.assertFalse("empty session id, optional should not be present", session.isPresent());
+        // Invalid Session Id
+        session = sessionService.getSessionById("thisIsNotAUuid");
+        Assert.assertFalse("invalid session id, optional should not be present", session.isPresent());
+
+
+        Session newSession = Session.builder().clientContent("testClientContent").serverContent("testServerContent").build();
+        newSession = sessionRepository.save(newSession);
+        sessionsToRemove.add(newSession.getId());
+        session = sessionService.getSessionById(newSession.getId());
+        Assert.assertTrue("Valid session id, optional must be present", session.isPresent());
     }
 
     @Override
