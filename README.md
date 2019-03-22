@@ -21,3 +21,10 @@ Use Liquibase for initial schema generation.
 
 Unit and integration tests are present for all non-framework parts of the code.
 
+### Next Steps
+
+- Add docker-compose support
+- More advanced configuration of Liquibase
+- Better implementation of custom authentication provider
+- Secured web page that uses current (or more detailed) services to visualise data
+- Add travis CI (or a substitute)
