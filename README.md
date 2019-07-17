@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/amaralani/pixy.svg?branch=master)](https://travis-ci.org/amaralani/pixy)
+[![codecov](https://codecov.io/gh/amaralani/pixy/branch/master/graph/badge.svg)](https://codecov.io/gh/amaralani/pixy)
+
 # Pixy
 A Simple Wire Protocol Analyzer
 
